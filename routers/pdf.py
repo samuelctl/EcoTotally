@@ -24,7 +24,9 @@ def gerar_relatorio_pdf(
         janela_meses=3
     )
 
-    # Usa arquivo temporário — não deixa lixo no disco após o envio
+    # Injeta nome do usuário para aparecer no PDF   ← ADICIONADO
+    insights['nome_usuario'] = getattr(usuario, 'nome', 'Usuário')
+
     tmp = tempfile.NamedTemporaryFile(suffix=".pdf", delete=False)
     tmp.close()
 
@@ -34,7 +36,6 @@ def gerar_relatorio_pdf(
             path=tmp.name,
             filename="relatorio_ecototally.pdf",
             media_type="application/pdf",
-            background=None  # FileResponse fecha o arquivo; limpamos abaixo via headers
         )
     except Exception:
         os.unlink(tmp.name)
